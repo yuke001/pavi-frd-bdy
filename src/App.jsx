@@ -189,7 +189,7 @@ function App() {
         </button>
         <Gallery isActive={currentPage === 4} />
         <section className="final">
-          <h2 className="final-message">💖 Forever Yours — yuke... 💖</h2>
+          <h2 className="final-message">💖 Forever Yours — Pavi... 💖</h2>
           <p className="final-subtitle">
             I hope your birthday is as sweet as you 🍰🍬✨ <br />
             Have a blast 🎉🔥💃 <br />

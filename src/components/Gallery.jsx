@@ -5,186 +5,167 @@ import "./Gallery.css";
 function Gallery({ isActive }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [photosRevealed, setPhotosRevealed] = useState(false);
+  const [revealed, setRevealed] = useState(false);
 
-  const photosRef = useRef([]);
-  const lightboxImgRef = useRef(null);
+  const mediaRef = useRef([]);
+  const lightboxContentRef = useRef(null);
 
-  const photos = [
-    { src: "/images/pic01.png", alt: "Memory 1" },
-    { src: "/images/pic02.png", alt: "Memory 2" },
-    { src: "/images/pic03.png", alt: "Memory 3" },
-    { src: "/images/pic04.png", alt: "Memory 4" },
-    { src: "/images/pic05.png", alt: "Memory 5" },
-    { src: "/images/pic06.png", alt: "Memory 6" },
+  // --- 1. DEFINE YOUR MEMORIES HERE (Images & Videos) ---
+  const memories = [
+    { type: "image", src: "/images/pic01.png" },
+    { type: "video", src: "/videos/video1.mp4" }, // Video example
+    { type: "image", src: "/images/pic02.png" },
+    { type: "video", src: "/videos/video2.mp4" }, // Video example
+    { type: "image", src: "/images/pic03.png" },
+    { type: "video", src: "/videos/video3.mp4" }, // Video example
+    { type: "image", src: "/images/pic04.png" },
+    { type: "video", src: "/videos/video5.mp4" }, // Video example
+    { type: "image", src: "/images/pic05.png" },
+    { type: "video", src: "/videos/video6.mp4" }, // Video example
+    { type: "image", src: "/images/pic06.png" },
+    { type: "video", src: "/videos/video7.mp4" }, // Video example
   ];
 
-  // Reveal photos with GSAP when page becomes active
+  // Animation on enter
   useEffect(() => {
-    if (isActive && !photosRevealed) {
-      setTimeout(() => setPhotosRevealed(true), 10);
-
-      // Stagger animation for photos
+    if (isActive && !revealed) {
+      setTimeout(() => setRevealed(true), 10);
       gsap.fromTo(
-        photosRef.current,
-        {
-          opacity: 0,
-          y: 50,
-          scale: 0.8,
-        },
+        mediaRef.current,
+        { opacity: 0, y: 50, scale: 0.8 },
         {
           opacity: 1,
           y: 0,
           scale: 1,
           duration: 0.6,
-          stagger: 0.12,
+          stagger: 0.1,
           ease: "back.out(1.4)",
           delay: 0.2,
-        }
+        },
       );
     }
-  }, [isActive, photosRevealed]);
+  }, [isActive, revealed]);
 
   const openLightbox = (index) => {
     setCurrentIndex(index);
     setLightboxOpen(true);
-
-    // Animate lightbox appearance
-    if (lightboxImgRef.current) {
-      gsap.fromTo(
-        lightboxImgRef.current,
-        { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.4)" }
-      );
-    }
   };
 
-  const closeLightbox = useCallback(() => {
-    setLightboxOpen(false);
-  }, []);
+  const closeLightbox = () => setLightboxOpen(false);
 
-  // Handle body overflow in effect
+  // Keyboard navigation
   useEffect(() => {
-    if (lightboxOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [lightboxOpen]);
-
-  const showNext = useCallback(() => {
-    const newIndex = (currentIndex + 1) % photos.length;
-
-    // Animate transition
-    if (lightboxImgRef.current) {
-      gsap.to(lightboxImgRef.current, {
-        x: -100,
-        opacity: 0,
-        duration: 0.2,
-        ease: "power2.in",
-        onComplete: () => {
-          setCurrentIndex(newIndex);
-          gsap.fromTo(
-            lightboxImgRef.current,
-            { x: 100, opacity: 0 },
-            { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" }
-          );
-        },
-      });
-    }
-  }, [currentIndex, photos.length]);
-
-  const showPrev = useCallback(() => {
-    const newIndex = (currentIndex - 1 + photos.length) % photos.length;
-
-    // Animate transition
-    if (lightboxImgRef.current) {
-      gsap.to(lightboxImgRef.current, {
-        x: 100,
-        opacity: 0,
-        duration: 0.2,
-        ease: "power2.in",
-        onComplete: () => {
-          setCurrentIndex(newIndex);
-          gsap.fromTo(
-            lightboxImgRef.current,
-            { x: -100, opacity: 0 },
-            { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" }
-          );
-        },
-      });
-    }
-  }, [currentIndex, photos.length]);
-
-  useEffect(() => {
+    if (!lightboxOpen) return;
     const handleKeyDown = (e) => {
-      if (!lightboxOpen) return;
-
-      if (e.key === "Escape") {
-        closeLightbox();
-      } else if (e.key === "ArrowLeft") {
-        showPrev();
-      } else if (e.key === "ArrowRight") {
-        showNext();
-      }
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") changeMedia(-1);
+      if (e.key === "ArrowRight") changeMedia(1);
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightboxOpen, showNext, showPrev, closeLightbox]);
+  }, [lightboxOpen, currentIndex]);
+
+  const changeMedia = useCallback(
+    (direction) => {
+      // Fade out current content
+      if (lightboxContentRef.current) {
+        gsap.to(lightboxContentRef.current, {
+          opacity: 0,
+          scale: 0.95,
+          duration: 0.2,
+          onComplete: () => {
+            // Update index
+            setCurrentIndex((prev) => {
+              const count = memories.length;
+              return (prev + direction + count) % count;
+            });
+            // Fade in new content
+            gsap.to(lightboxContentRef.current, {
+              opacity: 1,
+              scale: 1,
+              duration: 0.3,
+              delay: 0.1,
+            });
+          },
+        });
+      }
+    },
+    [memories.length],
+  );
+
+  const currentItem = memories[currentIndex];
 
   return (
     <section className="gallery">
-      <h2>📸 Beautiful Memories</h2>
-      <div className="photos">
-        {photos.map((photo, index) => (
-          <img
+      <h2>📸 Memories & Reels</h2>
+
+      <div className="media-grid">
+        {memories.map((item, index) => (
+          <div
             key={index}
-            ref={(el) => (photosRef.current[index] = el)}
-            src={photo.src}
-            alt={photo.alt}
+            ref={(el) => (mediaRef.current[index] = el)}
+            className="media-card"
             onClick={() => openLightbox(index)}
-            loading="lazy"
-          />
+          >
+            {item.type === "video" ? (
+              <>
+                <video src={item.src} muted playsInline preload="metadata" />
+                <div className="play-overlay">
+                  <div className="play-icon">▶</div>
+                </div>
+              </>
+            ) : (
+              <img src={item.src} alt="Memory" loading="lazy" />
+            )}
+          </div>
         ))}
       </div>
 
       {lightboxOpen && (
         <div className="lightbox" onClick={closeLightbox}>
-          <img
-            ref={lightboxImgRef}
-            src={photos[currentIndex].src}
-            alt={photos[currentIndex].alt}
-            onClick={(e) => e.stopPropagation()}
-          />
-          <button
-            className="lightbox-close"
-            onClick={closeLightbox}
-            aria-label="Close lightbox"
-          >
+          <button className="lightbox-close" onClick={closeLightbox}>
             ✖
           </button>
+
           <button
             className="nav-btn nav-prev"
             onClick={(e) => {
               e.stopPropagation();
-              showPrev();
+              changeMedia(-1);
             }}
-            aria-label="Previous photo"
           >
             ‹
           </button>
+
+          <div
+            className="lightbox-content-wrapper"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {currentItem.type === "video" ? (
+              <video
+                ref={lightboxContentRef}
+                src={currentItem.src}
+                className="lightbox-media"
+                controls
+                autoPlay
+                playsInline
+              />
+            ) : (
+              <img
+                ref={lightboxContentRef}
+                src={currentItem.src}
+                className="lightbox-media"
+                alt="Memory Fullscreen"
+              />
+            )}
+          </div>
+
           <button
             className="nav-btn nav-next"
             onClick={(e) => {
               e.stopPropagation();
-              showNext();
+              changeMedia(1);
             }}
-            aria-label="Next photo"
           >
             ›
           </button>
@@ -195,8 +176,3 @@ function Gallery({ isActive }) {
 }
 
 export default Gallery;
-
-
-
-
-
