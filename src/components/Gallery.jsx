@@ -12,17 +12,17 @@ function Gallery({ isActive }) {
 
   // --- 1. DEFINE YOUR MEMORIES HERE (Images & Videos) ---
   const memories = [
-    { type: "image", src: "/images/pic01.png" },
+    { type: "image", src: "/images/pic01.jpeg" },
     { type: "video", src: "/videos/video1.mp4" }, // Video example
-    { type: "image", src: "/images/pic02.png" },
+    { type: "image", src: "/images/pic02.jpeg" },
     { type: "video", src: "/videos/video2.mp4" }, // Video example
-    { type: "image", src: "/images/pic03.png" },
+    { type: "image", src: "/images/pic03.jpeg" },
     { type: "video", src: "/videos/video3.mp4" }, // Video example
-    { type: "image", src: "/images/pic04.png" },
+    { type: "image", src: "/images/pic04.jpeg" },
     { type: "video", src: "/videos/video5.mp4" }, // Video example
-    { type: "image", src: "/images/pic05.png" },
+    { type: "image", src: "/images/pic05.jpeg" },
     { type: "video", src: "/videos/video6.mp4" }, // Video example
-    { type: "image", src: "/images/pic06.png" },
+    { type: "image", src: "/images/pic06.jpeg" },
     { type: "video", src: "/videos/video7.mp4" }, // Video example
   ];
 
