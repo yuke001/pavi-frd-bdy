@@ -1,0 +1,59 @@
+.heart-trail-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Allows clicking through to buttons */
+    z-index: 50;
+    overflow: hidden;
+}
+
+.trail-heart-1 {
+    /* Use your image if available, otherwise it shows a pink heart shape */
+    background: url("/images/Heart.png"); /* Replace with Heart.png if you have it */
+    background-color: #ff69b4; 
+    clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
+    position: absolute;
+    pointer-events: none;
+    background-size: cover;
+    transform: translate(-50%, -50%);
+    animation: loving 2s linear forwards;
+}
+
+@keyframes loving {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -1000%) scale(0); /* Adjusted from 5000% to be smoother */
+        opacity: 0;
+        filter: hue-rotate(360deg);
+    }
+}
+
+.trail-heart-2 {
+    background: url("/images/Heart2.png"); /* Replace with Heart2.png */
+    background-color: #e91e63;
+    clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
+    position: absolute;
+    pointer-events: none;
+    background-size: cover;
+    transform: translate(-50%, -50%);
+    animation: loving2 2s linear forwards;
+}
+
+@keyframes loving2 {
+    0% {
+        transform: translate(-50%, -50%) rotate(40deg) scale(1);
+        opacity: 1;
+        filter: hue-rotate(0);
+    }
+    100% {
+        transform: translate(-50%, 1000%) rotate(360deg) scale(0);
+        opacity: 0;
+        filter: hue-rotate(180deg);
+    }
+}
