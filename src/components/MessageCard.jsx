@@ -13,15 +13,11 @@ function MessageCard({ isActive }) {
   const curtainHintRef = useRef(null);
   const messageContentRef = useRef(null);
 
-  const message = `Shannu....💙,
+  const message = `
+  
+  Shannu....💙,
 
-   I hope today brings you the kind of happiness you quietly bring into other people’s lives — especially mine. 🌼💫
-
-   Happy Birthday to a sweet soul 🎉💖 You deserve every good thing that comes your way. Have a blast! 🎂✨
-
-   I’m really grateful for you and everything we’ve shared 🤍🌿 You’re truly special to me.
-
-
+The unexpected gift I got from God thank u for giving me a frd like her I am so lucky to have her in my life. the distance doesn't not mean to me bcoz u r always with me ☺️ i know it little bit over but it's true u have to believe that 😅Ok it's time to Wish You a Very Happy Birthday to you my dearest frd i hope You have blast on your day it's yours day juz do what u want ❤️i always love you and I keep loving You babe see you soon and I missing you very bad 😞 Love You Babe 😘
 
 Happy Birthday! 🎉
 
