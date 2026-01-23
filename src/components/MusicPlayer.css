@@ -1,10 +1,21 @@
-/* Music Player */
-.music-toggle {
+
+
+
+
+/* Wrapper for both buttons */
+.music-controls {
   position: fixed;
   right: 25px;
-  top: 25px;
   top: max(env(safe-area-inset-top, 25px), 25px);
   z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: all;
+}
+
+/* Play / Pause Button */
+.music-toggle {
   background: rgba(255, 255, 255, 0.98);
   color: #e91e63;
   border: 2px solid #e91e63;
@@ -16,7 +27,6 @@
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  pointer-events: all;
 }
 
 .music-toggle:hover {
@@ -30,22 +40,58 @@
   transform: scale(0.98);
 }
 
-/* Mobile responsive */
+/* Next Button */
+.music-next {
+  background: rgba(255, 255, 255, 0.98);
+  color: #e91e63;
+  border: 2px solid #e91e63;
+  padding: 10px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.music-next:hover {
+  background: #e91e63;
+  color: white;
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(233, 30, 99, 0.4);
+}
+
+.music-next:active {
+  transform: scale(0.95);
+}
+
+/* Mobile Responsive */
 @media (max-width: 600px) {
-  .music-toggle {
+  .music-controls {
     right: 15px;
-    top: 15px;
     top: max(env(safe-area-inset-top, 15px), 15px);
+    gap: 8px;
+  }
+
+  .music-toggle {
     padding: 10px 16px;
     font-size: 0.9rem;
+  }
+
+  .music-next {
+    padding: 8px 10px;
+    font-size: 0.85rem;
   }
 }
 
 @media (max-width: 375px) {
-  .music-toggle {
+  .music-controls {
     right: 12px;
-    top: 12px;
     top: max(env(safe-area-inset-top, 12px), 12px);
+  }
+
+  .music-toggle {
     padding: 8px 14px;
     font-size: 0.85rem;
   }
